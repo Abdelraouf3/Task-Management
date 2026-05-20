@@ -7,7 +7,7 @@ function App() {
 
   return (
 
-    <div className='flex-center flex-col min-h-screen w-full bg-slate-50 p-3 sm:p-4 md:p-6 gap-4 sm:gap-6 md:gap-8'>
+    <div className='flex-center flex-col min-h-screen w-full bg-[#89cff0] p-3 sm:p-4 md:p-6 gap-4 sm:gap-6 md:gap-8'>
 
       <div className="text-center mb-2">
 
