@@ -9,8 +9,10 @@ const loadState = () => {
         
         const parsedData = JSON.parse(serialized)
         
-        // Ensure legacy task shapes migration works safely without data loss
-        const migratedTasks = (parsedData.tasks || []).map((task, idx) => ({
+        // Handle cases where the cached layout is flat or nested
+        const rawTasks = Array.isArray(parsedData.tasks) ? parsedData.tasks : []
+        
+        const migratedTasks = rawTasks.map((task, idx) => ({
             id: task.id,
             title: task.title,
             priority: task.priority || 'low',
@@ -22,6 +24,7 @@ const loadState = () => {
             createdAt: task.createdAt || new Date().toISOString()
         }))
 
+        // Match the exact slice initial state shape expected by selectors
         return {
             tasks: {
                 tasks: migratedTasks,

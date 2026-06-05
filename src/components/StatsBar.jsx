@@ -3,74 +3,44 @@ import { useSelector } from 'react-redux'
 import { selectStats } from '../redux/tasksSlice'
 
 const StatsBar = () => {
-
     const { total, completed, completionRate, high, medium, low } = useSelector(selectStats)
 
     return (
-
-        <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-
-            {/* Box 1 — Total Tasks */}
-            <div className="border border-gray-300 rounded-lg bg-white p-3 sm:p-4 text-center shadow-sm">
-
-                <p className="text-[11px] sm:text-[13px] text-gray-500 uppercase tracking-wide font-semibold mb-1">Total Tasks</p>
-
-                <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-blue-600">
-                    {total}
-                </p>
-
-                <p className="text-[11px] sm:text-[12px] text-gray-400 mt-1">{completed} completed</p>
-
-            </div>
-
-            {/* Box 2 — Completion Rate */}
-            <div className="border border-gray-300 rounded-lg bg-white p-3 sm:p-4 text-center shadow-sm">
-
-                <p className="text-[11px] sm:text-[13px] text-gray-500 uppercase tracking-wide font-semibold mb-1">Completion</p>
-
-                <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-blue-600">
-                    {completionRate}%
-                </p>
-
-                <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                    <div
-                        className="bg-linear-to-r from-cyan-500 to-blue-600 h-1.5 rounded-full transition-all duration-500"
-                        style={{ width: `${completionRate}%` }}
-                    />
+        <div className="w-full max-w-2xl bg-white border border-gray-300 rounded-lg p-4 shadow-sm my-2">
+            <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-3">
+                Today's Overview metrics
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col justify-between">
+                    <span className="text-xs text-gray-500 font-semibold">Total Tasks</span>
+                    <span className="text-xl sm:text-2xl font-extrabold text-blue-600">{total}</span>
                 </div>
-
-            </div>
-
-            {/* Box 3 — Priority Breakdown */}
-            <div className="border border-gray-300 rounded-lg bg-white p-3 sm:p-4 shadow-sm">
-
-                <p className="text-[11px] sm:text-[13px] text-gray-500 uppercase tracking-wide font-semibold mb-2 text-center">By Priority</p>
-
-                <div className="flex flex-col gap-1">
-
-                    <div className="flex items-center justify-between">
-                        <span className="text-[12px] font-bold text-red-500 uppercase">High</span>
-                        <span className="text-[13px] font-bold text-gray-700">{high}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <span className="text-[12px] font-bold text-yellow-500 uppercase">Medium</span>
-                        <span className="text-[13px] font-bold text-gray-700">{medium}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <span className="text-[12px] font-bold text-green-500 uppercase">Low</span>
-                        <span className="text-[13px] font-bold text-gray-700">{low}</span>
-                    </div>
-
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col justify-between">
+                    <span className="text-xs text-gray-500 font-semibold">Completed</span>
+                    <span className="text-xl sm:text-2xl font-extrabold text-green-600">{completed}</span>
                 </div>
-
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 col-span-2 sm:col-span-1 flex items-center justify-between sm:flex-col sm:items-start sm:justify-between">
+                    <span className="text-xs text-gray-500 font-semibold">Completion Rate</span>
+                    <span className="text-xl sm:text-2xl font-extrabold text-orange-500">{completionRate}%</span>
+                </div>
             </div>
 
+            <div className="flex items-center gap-4 mt-4 pt-3 border-t border-gray-100 text-[12px] font-bold text-gray-500 flex-wrap">
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 bg-red-400 rounded-full inline-block"></span>
+                    High: {high}
+                </span>
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 bg-yellow-400 rounded-full inline-block"></span>
+                    Medium: {medium}
+                </span>
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 bg-green-400 rounded-full inline-block"></span>
+                    Low: {low}
+                </span>
+            </div>
         </div>
-
     )
-
 }
 
 export default StatsBar

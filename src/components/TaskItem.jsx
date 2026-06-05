@@ -71,7 +71,7 @@ const TaskItem = ({ task }) => {
                             <select 
                                 value={task.repeat} 
                                 onChange={(e) => dispatch(updateTaskRepeat({ id: task.id, repeat: e.target.value }))}
-                                className="text-[11px] border border-gray-300 rounded px-1 py-0.5 bg-white text-gray-600 font-medium focus:outline-none"
+                                className="text-[11px] border border-gray-300 rounded px-1 py-0.5 bg-white text-gray-600 font-medium focus:outline-none cursor-pointer"
                             >
                                 <option value="none">No Repeat</option>
                                 <option value="daily">Daily</option>

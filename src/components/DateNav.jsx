@@ -20,7 +20,7 @@ const DateNav = () => {
     }
 
     return (
-        <div className="w-full max-w-2xl flex items-center justify-between bg-white border border-gray-300 rounded-lg p-3 shadow-sm mb-4">
+        <div className="w-full max-w-2xl flex items-center justify-between bg-white border border-gray-300 rounded-lg p-3 shadow-sm my-2">
             <button 
                 onClick={() => dispatch(previousDay())}
                 className="text-xs sm:text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors cursor-pointer select-none"
@@ -28,7 +28,7 @@ const DateNav = () => {
                 ◀ Yesterday
             </button>
 
-            <span className="text-sm sm:text-base font-extrabold text-gray-700 bg-gray-100 px-4 py-1 rounded-md border border-gray-200">
+            <span className="text-xs sm:text-sm font-extrabold text-gray-700 bg-gray-100 px-4 py-1 rounded-md border border-gray-200">
                 {formatDisplayDate(selectedDateStr)}
             </span>
 

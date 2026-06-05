@@ -2,6 +2,7 @@ import './App.css'
 import StatsBar from './components/StatsBar'
 import TaskForm from './components/TaskForm'
 import TaskList from './components/TaskList'
+import DateNav from './components/DateNav'
 
 function App() {
 
@@ -26,6 +27,9 @@ function App() {
       <div className="w-full flex flex-col items-center gap-6">
 
         {/* Stats dashboard at the top */}
+      
+        <DateNav />
+      
         <StatsBar />
 
         <TaskForm />

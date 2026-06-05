@@ -11,6 +11,12 @@ const TaskList = () => {
     const activeDate = useSelector(selectSelectedDate)
     const { pinnedTasks, datedTasks, completedTasks } = useSelector(selectTasksByCategories)
 
+    console.log({
+        pinnedTasks,
+        datedTasks,
+        completedTasks,
+    })
+
     const handleDeleteDay = () => {
         if (window.confirm('Are you sure you want to clear tasks recorded for this specific day?')) {
             dispatch(deleteCurrentDayTasks())
@@ -30,7 +36,7 @@ const TaskList = () => {
     const totalVisible = pinnedTasks.length + datedTasks.length + completedTasks.length
 
     return (
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-2xl my-2">
             <div className="border border-gray-500 rounded-lg h-full w-full bg-white shadow-sm">
                 <div className="py-2 px-3 sm:px-5 border-b border-gray-300 flex items-center justify-between flex-wrap gap-2">
                     <div>
