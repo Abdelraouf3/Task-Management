@@ -2,7 +2,27 @@ import { createSlice, nanoid } from '@reduxjs/toolkit'
 
 const getTodayString = () => new Date().toISOString().split('T')[0]
 
-const isVisibleForDate = ( task, selectedDate ) => {
+const isCompletedForDate = (
+    task,
+    selectedDate
+) => {
+    return (
+        task.completedDates?.includes(
+            selectedDate
+        ) || false
+    )
+}
+
+const getWeekDay = (dateStr) => {
+    const [year, month, day] = dateStr.split('-')
+    return new Date(year, month - 1, day).getDay()
+}
+
+const getMonthDay = (dateStr) => {
+    return Number(dateStr.split('-')[2])
+}
+
+const isVisibleForDate = (task, selectedDate) => {
     if (!task) return false
 
     if (task.pinned) return true
@@ -12,15 +32,15 @@ const isVisibleForDate = ( task, selectedDate ) => {
 
     if (task.repeat === 'weekly') {
         return (
-            new Date(task.date).getDay() ===
-            new Date(selectedDate).getDay()
+            getWeekDay(task.date) ===
+            getWeekDay(selectedDate)
         )
     }
 
     if (task.repeat === 'monthly') {
         return (
-            new Date(task.date).getDate() ===
-            new Date(selectedDate).getDate()
+            getMonthDay(task.date) ===
+            getMonthDay(selectedDate)
         )
     }
 
@@ -45,7 +65,7 @@ const tasksSlice = createSlice({
                         id: nanoid(),
                         title,
                         priority,
-                        completed: false,
+                        completedDates: [],
                         date: assignedDate,
                         pinned: false,
                         repeat: 'none', // Supported frequencies: 'none', 'daily', 'weekly', 'monthly'
@@ -70,24 +90,42 @@ const tasksSlice = createSlice({
         },
 
         toggleTask(state, action) {
-            const task = state.tasks.find((t) => t.id === action.payload)
-            if (task) task.completed = !task.completed
+            const task = state.tasks.find(
+                (t) => t.id === action.payload
+            )
+        
+            if (!task) return
+        
+            const currentDate = state.selectedDate
+        
+            const exists = task.completedDates?.includes(
+                currentDate
+            )
+        
+            if (exists) {
+                task.completedDates =
+                    task.completedDates.filter(
+                        (d) => d !== currentDate
+                    )
+            } else {
+                task.completedDates.push(currentDate)
+            }
         },
 
         togglePinTask(state, action) {
             const task = state.tasks.find((t) => t.id === action.payload)
+        
             if (task) {
                 task.pinned = !task.pinned
-                task.repeat = task.pinned ? 'daily' : 'none'
             }
         },
 
         updateTaskRepeat(state, action) {
             const { id, repeat } = action.payload
             const task = state.tasks.find((t) => t.id === id)
+        
             if (task) {
                 task.repeat = repeat
-                task.pinned = repeat !== 'none'
             }
         },
 
@@ -117,7 +155,10 @@ const tasksSlice = createSlice({
             const visibleTasks = state.tasks
                 .filter(
                     (t) =>
-                        !t.completed &&
+                        !isCompletedForDate(
+    t,
+    state.selectedDate
+) &&
                         isVisibleForDate(
                             t,
                             state.selectedDate
@@ -153,7 +194,10 @@ const tasksSlice = createSlice({
             const visibleTasks = state.tasks
                 .filter(
                     (t) =>
-                        !t.completed &&
+                        !isCompletedForDate(
+    t,
+    state.selectedDate
+) &&
                         isVisibleForDate(
                             t,
                             state.selectedDate
@@ -189,7 +233,13 @@ const tasksSlice = createSlice({
 
         deleteCurrentDayTasks(state) {
             const activeDate = state.selectedDate
-            state.tasks = state.tasks.filter((t) => t.date !== activeDate || t.pinned)
+            state.tasks = state.tasks.filter(
+                (t) =>
+                    !(
+                        t.date === activeDate &&
+                        t.repeat === 'none'
+                    )
+            )
         },
 
         deleteAllTasks(state) {
@@ -229,7 +279,10 @@ export const selectTasksByCategories = (state) => {
     if (filter === 'pinned') {
         activeSet = activeSet.filter((t) => t.pinned)
     } else if (filter === 'completed') {
-        activeSet = activeSet.filter((t) => t.completed)
+        activeSet = activeSet.filter((t) => isCompletedForDate(
+    t,
+    selectedDate
+))
     } else if (filter !== 'all') {
         activeSet = activeSet.filter(
             (t) => t.priority === filter
@@ -242,13 +295,27 @@ export const selectTasksByCategories = (state) => {
 
     return {
         pinnedTasks: sorted.filter(
-            (t) => t.pinned && !t.completed
+            (t) =>
+                t.pinned &&
+                !isCompletedForDate(
+                    t,
+                    selectedDate
+                )
         ),
         datedTasks: sorted.filter(
-            (t) => !t.pinned && !t.completed
+            (t) =>
+                !t.pinned &&
+                !isCompletedForDate(
+                    t,
+                    selectedDate
+                )
         ),
         completedTasks: sorted.filter(
-            (t) => t.completed
+            (t) =>
+                isCompletedForDate(
+                    t,
+                    selectedDate
+                )
         ),
     }
 }
@@ -259,16 +326,25 @@ export const selectStats = (state) => {
     const activeDayTasks = tasks.filter( (t) => isVisibleForDate(t, selectedDate) )
 
     const total = activeDayTasks.length
-    const completed = activeDayTasks.filter((t) => t.completed).length
+    const completed = activeDayTasks.filter( (t) => isCompletedForDate(t, selectedDate) ).length
     const completionRate = total ? Math.round((completed / total) * 100) : 0
 
     return {
         total,
         completed,
         completionRate,
-        high: activeDayTasks.filter((t) => t.priority === 'high' && !t.completed).length,
-        medium: activeDayTasks.filter((t) => t.priority === 'medium' && !t.completed).length,
-        low: activeDayTasks.filter((t) => t.priority === 'low' && !t.completed).length,
+        high: activeDayTasks.filter((t) => t.priority === 'high' && !isCompletedForDate(
+    t,
+    selectedDate
+)).length,
+        medium: activeDayTasks.filter((t) => t.priority === 'medium' && !isCompletedForDate(
+    t,
+    selectedDate
+)).length,
+        low: activeDayTasks.filter((t) => t.priority === 'low' && !isCompletedForDate(
+    t,
+    selectedDate
+)).length,
     }
 }
 

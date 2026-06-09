@@ -11,12 +11,6 @@ const TaskList = () => {
     const activeDate = useSelector(selectSelectedDate)
     const { pinnedTasks, datedTasks, completedTasks } = useSelector(selectTasksByCategories)
 
-    console.log({
-        pinnedTasks,
-        datedTasks,
-        completedTasks,
-    })
-
     const handleDeleteDay = () => {
         if (window.confirm('Are you sure you want to clear tasks recorded for this specific day?')) {
             dispatch(deleteCurrentDayTasks())

@@ -1,11 +1,16 @@
 import { faCheck, faClose, faPen, faTrashCan, faArrowUp, faArrowDown, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { toggleTask, editTask, deleteTask, togglePinTask, updateTaskRepeat, moveTaskUp, moveTaskDown } from '../redux/tasksSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleTask, editTask, deleteTask, togglePinTask, updateTaskRepeat, moveTaskUp, moveTaskDown, selectSelectedDate } from '../redux/tasksSlice'
 
 const TaskItem = ({ task }) => {
     const dispatch = useDispatch()
+
+    const selectedDate = useSelector(
+        selectSelectedDate
+    )
+
     const [isEdited, setIsEdited] = useState(false)
     const [editTitle, setEditTitle] = useState(task.title)
     const [editPriority, setEditPriority] = useState(task.priority)
@@ -30,12 +35,12 @@ const TaskItem = ({ task }) => {
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                         <input
                             type="checkbox"
-                            checked={task.completed}
+                            checked={task.completedDates?.includes(selectedDate)}
                             onChange={() => dispatch(toggleTask(task.id))}
                             className="cursor-pointer"
                         />
                         <div className="min-w-0 flex-1 pl-1">
-                            <h3 className={`text-[15px] sm:text-[16px] font-bold text-gray-700 break-words ${task.completed ? 'line-through text-gray-400 font-semibold' : ''}`}>
+                            <h3 className={`text-[15px] sm:text-[16px] font-bold text-gray-700 break-words ${task.completedDates?.includes(selectedDate) ? 'line-through text-gray-400 font-semibold' : ''}`}>
                                 {task.title}
                             </h3>
                             <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -52,7 +57,7 @@ const TaskItem = ({ task }) => {
                     </div>
 
                     <div className="flex items-center gap-2.5 self-end sm:self-auto">
-                        {!task.completed && (
+                        {!task.completedDates?.includes(selectedDate) && (
                             <>
                                 <button title="Move Up" className="cursor-pointer p-1 text-gray-400 hover:text-gray-700" onClick={() => dispatch(moveTaskUp(task.id))}>
                                     <FontAwesomeIcon icon={faArrowUp} className="text-xs" />
@@ -67,7 +72,7 @@ const TaskItem = ({ task }) => {
                             <FontAwesomeIcon icon={faThumbtack} className={`${task.pinned ? 'text-orange-500 scale-110' : 'text-gray-300 hover:text-gray-500'}`} />
                         </button>
 
-                        {!task.completed && (
+                        {!task.completedDates?.includes(selectedDate) && (
                             <select 
                                 value={task.repeat} 
                                 onChange={(e) => dispatch(updateTaskRepeat({ id: task.id, repeat: e.target.value }))}

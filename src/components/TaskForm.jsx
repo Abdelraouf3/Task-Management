@@ -15,15 +15,7 @@ const TaskForm = () => {
         const trimmed = title.trim()
         if (!trimmed) return
         
-        // Fallback to today's date if the state returns an invalid or undefined string
         const targetDate = activeDate || new Date().toISOString().split('T')[0]
-        
-        console.log(
-            'Adding Task:',
-            trimmed,
-            priority,
-            targetDate
-        )
         
         dispatch(
             addTask(

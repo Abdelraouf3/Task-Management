@@ -9,14 +9,19 @@ const loadState = () => {
         
         const parsedData = JSON.parse(serialized)
         
-        // Handle cases where the cached layout is flat or nested
         const rawTasks = Array.isArray(parsedData.tasks) ? parsedData.tasks : []
         
         const migratedTasks = rawTasks.map((task, idx) => ({
             id: task.id,
             title: task.title,
             priority: task.priority || 'low',
-            completed: task.completed || false,
+        
+            completedDates:
+                task.completedDates ||
+                (task.completed
+                    ? [task.date]
+                    : []),
+        
             date: task.date || new Date().toISOString().split('T')[0],
             pinned: task.pinned || false,
             repeat: task.repeat || 'none',
@@ -24,12 +29,11 @@ const loadState = () => {
             createdAt: task.createdAt || new Date().toISOString()
         }))
 
-        // Match the exact slice initial state shape expected by selectors
         return {
             tasks: {
                 tasks: migratedTasks,
                 filter: parsedData.filter || 'all',
-                selectedDate: parsedData.selectedDate || new Date().toISOString().split('T')[0]
+                selectedDate: new Date().toISOString().split('T')[0]
             }
         }
     } catch (e) {
