@@ -9,7 +9,7 @@ import TaskItem from './TaskItem'
 const TaskList = () => {
     const dispatch = useDispatch()
     const activeDate = useSelector(selectSelectedDate)
-    const { pinnedTasks, datedTasks, completedTasks } = useSelector(selectTasksByCategories)
+    const { pinnedTasks, recurringTasks, datedTasks, completedTasks } = useSelector(selectTasksByCategories)
 
     const handleDeleteDay = () => {
         if (window.confirm('Are you sure you want to clear tasks recorded for this specific day?')) {
@@ -65,13 +65,27 @@ const TaskList = () => {
                     </p>
                 ) : (
                     <div className="pt-2 pb-2 px-1">
-                        {/* Section 1: Pinned Everyday Tasks */}
+                            {/* 📌 Loop 1: Pinned Tasks Only */}
                         {pinnedTasks.length > 0 && (
                             <div className="mb-4">
                                 <h4 className="text-xs font-bold text-orange-600 uppercase tracking-wider px-3 mb-1.5 flex items-center gap-1">
-                                    📌 Daily Tasks
+                                    📌 Pinned Tasks
                                 </h4>
-                                {pinnedTasks.map(task => <TaskItem key={task.id} task={task} />)}
+                                {pinnedTasks.map((task) => (
+                                    <TaskItem key={task.id} task={task} />
+                                ))}
+                            </div>
+                        )}
+                    
+                        {/* 🔄 Loop 2: Recurring Tasks Only */}
+                        {recurringTasks.length > 0 && (
+                            <div className="mb-4">
+                                <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider px-3 mb-1.5 flex items-center gap-1">
+                                    🔄 Recurring Tasks
+                                </h4>
+                                {recurringTasks.map((task) => (
+                                    <TaskItem key={task.id} task={task} />
+                                ))}
                             </div>
                         )}
 

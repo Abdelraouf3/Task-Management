@@ -294,28 +294,30 @@ export const selectTasksByCategories = (state) => {
     )
 
     return {
+    
         pinnedTasks: sorted.filter(
             (t) =>
                 t.pinned &&
-                !isCompletedForDate(
-                    t,
-                    selectedDate
-                )
+                !isCompletedForDate(t, selectedDate)
         ),
+    
+        recurringTasks: sorted.filter(
+            (t) =>
+                t.repeat !== 'none' &&
+                !t.pinned &&
+                !isCompletedForDate(t, selectedDate)
+        ),
+    
         datedTasks: sorted.filter(
             (t) =>
+                t.repeat === 'none' &&
                 !t.pinned &&
-                !isCompletedForDate(
-                    t,
-                    selectedDate
-                )
+                !isCompletedForDate(t, selectedDate)
         ),
+    
         completedTasks: sorted.filter(
             (t) =>
-                isCompletedForDate(
-                    t,
-                    selectedDate
-                )
+                isCompletedForDate(t, selectedDate)
         ),
     }
 }
