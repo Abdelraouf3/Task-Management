@@ -30,12 +30,12 @@ const TaskList = () => {
     const totalVisible = pinnedTasks.length + datedTasks.length + completedTasks.length
 
     return (
-        <div className="w-full max-w-2xl my-2">
-            <div className="border border-gray-500 rounded-lg h-full w-full bg-white shadow-sm">
+        <div className="w-full max-w-4xl">
+            <div className="border border-gray-300 rounded-lg h-full w-full bg-white shadow-sm">
                 <div className="py-2 px-3 sm:px-5 border-b border-gray-300 flex items-center justify-between flex-wrap gap-2">
                     <div>
                         <FontAwesomeIcon icon={faListCheck} className='text-[18px] sm:text-[20px] text-cyan-500 mr-2' />
-                        <h3 className="inline text-[16px] sm:text-[18px] text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text font-bold capitalize">
+                        <h3 className="inline text-[16px] sm:text-[18px] text-transparent bg-linear-to-r from-cyan-500 to-blue-500 bg-clip-text font-bold capitalize">
                             task list
                         </h3>
                     </div>

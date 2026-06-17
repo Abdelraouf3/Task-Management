@@ -6,39 +6,68 @@ const StatsBar = () => {
     const { total, completed, completionRate, high, medium, low } = useSelector(selectStats)
 
     return (
-        <div className="w-full max-w-2xl bg-white border border-gray-300 rounded-lg p-4 shadow-sm my-2">
+        <div className="w-full max-w-4xl bg-white border border-gray-300 rounded-lg p-6 shadow-sm">
             <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-3">
                 Today's Overview metrics
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col justify-between">
-                    <span className="text-xs text-gray-500 font-semibold">Total Tasks</span>
-                    <span className="text-xl sm:text-2xl font-extrabold text-blue-600">{total}</span>
+            
+            <div className="flex flex-col lg:flex-row items-stretch gap-6">
+            
+                <div className="grid flex-1 grid-cols-1 sm:grid-cols-3 gap-4">
+            
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <span className="text-xs text-gray-500 font-semibold block">
+                            Total Tasks
+                        </span>
+            
+                        <span className="text-3xl font-extrabold text-blue-600">
+                            {total}
+                        </span>
+                    </div>
+            
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <span className="text-xs text-gray-500 font-semibold block">
+                            Completed
+                        </span>
+            
+                        <span className="text-3xl font-extrabold text-green-600">
+                            {completed}
+                        </span>
+                    </div>
+            
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <span className="text-xs text-gray-500 font-semibold block">
+                            Completion Rate
+                        </span>
+            
+                        <span className="text-3xl font-extrabold text-orange-500">
+                            {completionRate}%
+                        </span>
+                    </div>
+            
                 </div>
-                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col justify-between">
-                    <span className="text-xs text-gray-500 font-semibold">Completed</span>
-                    <span className="text-xl sm:text-2xl font-extrabold text-green-600">{completed}</span>
+            
+                <div className="lg:w-45 lg:border-l lg:pl-6 border-gray-200 flex flex-col justify-center gap-3">
+            
+                    <span className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                        <span className="w-3 h-3 rounded-full bg-red-400"></span>
+                        High: {high}
+                    </span>
+            
+                    <span className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                        <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        Medium: {medium}
+                    </span>
+            
+                    <span className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                        <span className="w-3 h-3 rounded-full bg-green-400"></span>
+                        Low: {low}
+                    </span>
+            
                 </div>
-                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 col-span-2 sm:col-span-1 flex items-center justify-between sm:flex-col sm:items-start sm:justify-between">
-                    <span className="text-xs text-gray-500 font-semibold">Completion Rate</span>
-                    <span className="text-xl sm:text-2xl font-extrabold text-orange-500">{completionRate}%</span>
-                </div>
+            
             </div>
-
-            <div className="flex items-center gap-4 mt-4 pt-3 border-t border-gray-100 text-[12px] font-bold text-gray-500 flex-wrap">
-                <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 bg-red-400 rounded-full inline-block"></span>
-                    High: {high}
-                </span>
-                <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 bg-yellow-400 rounded-full inline-block"></span>
-                    Medium: {medium}
-                </span>
-                <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 bg-green-400 rounded-full inline-block"></span>
-                    Low: {low}
-                </span>
-            </div>
+        
         </div>
     )
 }

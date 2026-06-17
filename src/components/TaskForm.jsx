@@ -29,11 +29,11 @@ const TaskForm = () => {
     }
 
     return (
-        <div className="w-full max-w-2xl my-2">
-            <div className="border border-gray-500 rounded-lg h-full w-full bg-white shadow-sm">
+        <div className="w-full max-w-4xl">
+            <div className="border border-gray-300 rounded-lg h-full w-full bg-white shadow-sm">
                 <div className="py-2 px-5 border-b border-gray-300">
                     <FontAwesomeIcon icon={faWpforms} className='text-[20px] text-cyan-500 mr-2' />
-                    <h3 className="inline text-[18px] text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text font-bold capitalize ">
+                    <h3 className="inline text-[18px] text-transparent bg-linear-to-r from-cyan-500 to-blue-500 bg-clip-text font-bold capitalize ">
                         task form
                     </h3>
                 </div>

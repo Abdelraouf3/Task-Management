@@ -24,7 +24,7 @@ function App() {
 
       </div>
 
-      <div className="w-full flex flex-col items-center gap-6">
+      <div className="w-full flex flex-col items-center gap-3">
 
         {/* Stats dashboard at the top */}
       

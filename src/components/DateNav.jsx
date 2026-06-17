@@ -34,7 +34,7 @@ const DateNav = () => {
     const dayDiff = getDayDifference(selectedDateStr)
 
     return (
-        <div className="w-full max-w-2xl flex items-center justify-between bg-white border border-gray-300 rounded-lg p-3 shadow-sm my-2">
+        <div className="w-full max-w-4xl flex items-center justify-between bg-white border border-gray-300 rounded-lg p-3 shadow-sm">
             <button 
                 onClick={() => dispatch(previousDay())}
                 className="text-xs sm:text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors cursor-pointer select-none"
