@@ -43,7 +43,7 @@ const TaskForm = () => {
             
                 <form onSubmit={handleSubmit} className="p-4 sm:p-5">
                     <div className="input w-full sm:flex-1">
-                        <label htmlFor="taskName" className="text-xs font-bold text-gray-500 uppercase tracking-wide">Task Description</label>
+                        <label htmlFor="taskName" className="text-xs font-bold text-gray-500 uppercase tracking-wide">Task Title</label>
                             <input
                                 type="text"
                                 value={title}
