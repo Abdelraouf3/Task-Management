@@ -27,7 +27,7 @@ const TaskList = () => {
         return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     }
 
-    const totalVisible = pinnedTasks.length + datedTasks.length + completedTasks.length
+    const totalVisible = pinnedTasks.length + datedTasks.length + completedTasks.length + recurringTasks.length
 
     return (
         <div className="w-full max-w-4xl">

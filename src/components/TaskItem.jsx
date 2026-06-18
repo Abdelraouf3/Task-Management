@@ -28,6 +28,8 @@ const TaskItem = ({ task }) => {
         setIsEdited(false)
     }
 
+    console.log(task);
+
     return (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-5 p-3 mx-1 sm:mx-2 mb-2 border border-transparent transition-colors duration-200 hover:border-gray-300 rounded-lg bg-gray-50/50">
             {!isEdited ? (

@@ -27,19 +27,28 @@ const isVisibleForDate = (task, selectedDate) => {
 
     if (task.pinned) return true
 
+    if (task.repeat !== 'none' && selectedDate < task.repeatStartDate) {
+        return task.date === selectedDate
+    }
+
     if (task.repeat === 'daily')
-        return true
+        return isFutureOrSameDate(selectedDate, task.repeatStartDate)
 
     if (task.repeat === 'weekly') {
         return (
-            getWeekDay(task.date) ===
+            isFutureOrSameDate(selectedDate, task.repeatStartDate)
+        ) && 
+            getWeekDay(task.repeatStartDate) ===
             getWeekDay(selectedDate)
-        )
     }
 
     if (task.repeat === 'monthly') {
         return (
-            getMonthDay(task.date) ===
+            isFutureOrSameDate(
+                selectedDate,
+                task.repeatStartDate
+            ) &&
+            getMonthDay(task.repeatStartDate) ===
             getMonthDay(selectedDate)
         )
     }
@@ -68,7 +77,8 @@ const tasksSlice = createSlice({
                         completedDates: [],
                         date: assignedDate,
                         pinned: false,
-                        repeat: 'none', // Supported frequencies: 'none', 'daily', 'weekly', 'monthly'
+                        repeat: 'none', 
+                        repeatStartDate: assignedDate,
                         order: new Date().getTime(),
                         createdAt: new Date().toISOString(),
                     },
@@ -122,10 +132,20 @@ const tasksSlice = createSlice({
 
         updateTaskRepeat(state, action) {
             const { id, repeat } = action.payload
-            const task = state.tasks.find((t) => t.id === id)
         
-            if (task) {
-                task.repeat = repeat
+            const task = state.tasks.find(
+                (t) => t.id === id
+            )
+        
+            if (!task) return
+        
+            const wasNone = task.repeat === 'none'
+        
+            task.repeat = repeat
+        
+            if (wasNone && repeat !== 'none') {
+                task.repeatStartDate =
+                    state.selectedDate
             }
         },
 
@@ -320,6 +340,12 @@ export const selectTasksByCategories = (state) => {
                 isCompletedForDate(t, selectedDate)
         ),
     }
+}
+
+const isFutureOrSameDate = ( selectedDate, startDate ) => {
+
+    return selectedDate >= startDate
+
 }
 
 // Scoped metric builder targeting the visible calendar domain exclusively

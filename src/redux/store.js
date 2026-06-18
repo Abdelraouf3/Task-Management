@@ -25,6 +25,12 @@ const loadState = () => {
             date: task.date || new Date().toISOString().split('T')[0],
             pinned: task.pinned || false,
             repeat: task.repeat || 'none',
+        
+            repeatStartDate:
+                task.repeatStartDate ||
+                task.date ||
+                new Date().toISOString().split('T')[0],
+        
             order: task.order !== undefined ? task.order : idx,
             createdAt: task.createdAt || new Date().toISOString()
         }))
