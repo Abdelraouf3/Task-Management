@@ -1,4 +1,4 @@
-import { faCheck, faClose, faPen, faTrashCan, faArrowUp, faArrowDown, faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faClose, faPen, faTrashCan, faArrowUp, faArrowDown, faThumbtack, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,13 +12,15 @@ const TaskItem = ({ task }) => {
     )
 
     const [isEdited, setIsEdited] = useState(false)
+    const [expanded, setExpanded] = useState(false)
     const [editTitle, setEditTitle] = useState(task.title)
+    const [editDescription, setEditDescription] = useState(task.description)
     const [editPriority, setEditPriority] = useState(task.priority)
 
     const handleSave = () => {
         const trimmed = editTitle.trim()
         if (!trimmed) return
-        dispatch(editTask({ id: task.id, title: trimmed, priority: editPriority }))
+        dispatch(editTask({ id: task.id, title: trimmed, priority: editPriority, description: editDescription }))
         setIsEdited(false)
     }
 
@@ -26,9 +28,8 @@ const TaskItem = ({ task }) => {
         setEditTitle(task.title)
         setEditPriority(task.priority)
         setIsEdited(false)
+        setEditDescription(task.description)
     }
-
-    console.log(task);
 
     return (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-5 p-3 mx-1 sm:mx-2 mb-2 border border-transparent transition-colors duration-200 hover:border-gray-300 rounded-lg bg-gray-50/50">
@@ -41,10 +42,18 @@ const TaskItem = ({ task }) => {
                             onChange={() => dispatch(toggleTask(task.id))}
                             className="cursor-pointer"
                         />
-                        <div className="min-w-0 flex-1 pl-1">
+                        <div className="min-w-0 flex-1 pl-1 cursor-pointer"
+                            onClick={ () => { setExpanded(!expanded) } }>
                             <h3 className={`text-[15px] sm:text-[16px] font-bold text-gray-700 break-words ${task.completedDates?.includes(selectedDate) ? 'line-through text-gray-400 font-semibold' : ''}`}>
                                 {task.title}
                             </h3>
+                        
+                            {expanded && task.description && (
+                                <p className="mt-2 text-sm text-gray-500 whitespace-pre-wrap">
+                                    {task.description}
+                                </p>
+                            )}
+                        
                             <div className="flex items-center gap-2 mt-1 flex-wrap">
                                 <span className={`border border-gray-300 font-bold text-[11px] uppercase px-2 py-0.5 rounded ${task.priority === 'high' && 'bg-red-100 text-red-600'} ${task.priority === 'medium' && 'bg-yellow-100 text-yellow-600'} ${task.priority === 'low' && 'bg-green-100 text-green-600'}`}>
                                     {task.priority}
@@ -86,7 +95,15 @@ const TaskItem = ({ task }) => {
                                 <option value="monthly">Monthly</option>
                             </select>
                         )}
-
+                        <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} 
+                            className='cursor-pointer'
+                            onClick={ () => setExpanded(!expanded) } />
+                        {/* <button
+                            onClick={() => setExpanded(!expanded)}
+                            className="text-xs text-blue-500 font-semibold"
+                        >
+                            {expanded ? 'Hide Details' : 'Details'}
+                        </button> */}
                         <button className='cursor-pointer p-1' onClick={() => setIsEdited(true)}>
                             <FontAwesomeIcon icon={faPen} className='text-cyan-600 text-sm' />
                         </button>
@@ -97,13 +114,23 @@ const TaskItem = ({ task }) => {
                 </>
             ) : (
                 <>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-1">
+                    <div className="h-full flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-1">
                         <input
                             type="text"
                             className='block w-full border-2 border-gray-400 rounded-lg py-1.5 px-3 mt-2 focus:outline-none transition-colors duration-200 focus:border-blue-900'
                             value={editTitle}
                             onChange={(e) => setEditTitle(e.target.value)}
                         />
+                        <textarea
+                            value={editDescription}
+                            onChange={(e) =>
+                                setEditDescription(e.target.value)
+                            }
+                            rows={3}
+                            className="w-full mt-2 border-2 border-gray-400 rounded-lg py-2 px-3 resize-none focus:outline-none focus:border-blue-900"
+                        />
+                    </div>
+                    <div className="flex items-center gap-3 sm:gap-2 self-end sm:self-auto mt-1 sm:mt-0">
                         <select
                             className='border-2 w-full sm:w-auto border-gray-400 rounded-lg py-1.5 px-3 mt-2 focus:outline-none transition-colors duration-200 focus:border-blue-900'
                             value={editPriority}
@@ -113,8 +140,6 @@ const TaskItem = ({ task }) => {
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
                         </select>
-                    </div>
-                    <div className="flex items-center gap-3 sm:gap-2 self-end sm:self-auto mt-1 sm:mt-0">
                         <button className='cursor-pointer p-1' onClick={handleSave}>
                             <FontAwesomeIcon icon={faCheck} className='text-green-600' />
                         </button>

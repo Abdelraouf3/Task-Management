@@ -8,6 +8,7 @@ const TaskForm = () => {
     const dispatch = useDispatch()
     const activeDate = useSelector(selectSelectedDate)
     const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
     const [priority, setPriority] = useState('low')
 
     const handleSubmit = (e) => {
@@ -21,11 +22,13 @@ const TaskForm = () => {
             addTask(
                 trimmed,
                 priority,
-                targetDate
+                targetDate,
+                description.trim(),
             )
         )
         setTitle('')
         setPriority('low')
+        setDescription('')
     }
 
     return (
@@ -37,43 +40,51 @@ const TaskForm = () => {
                         task form
                     </h3>
                 </div>
-
-                <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 p-4 sm:p-5 flex-wrap">
+            
+                <form onSubmit={handleSubmit} className="p-4 sm:p-5">
                     <div className="input w-full sm:flex-1">
                         <label htmlFor="taskName" className="text-xs font-bold text-gray-500 uppercase tracking-wide">Task Description</label>
-                        <input
-                            type="text"
-                            className='block w-full border-2 border-gray-400 rounded-lg py-1.5 px-3 mt-2 focus:outline-none transition-colors duration-200 focus:border-blue-900'
-                            placeholder='Enter your description...'
-                            id="taskName"
-                            name='taskName'
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            required
-                        />
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="What needs to be done?"
+                                className="w-full border border-gray-300 rounded-xl px-4 py-3 mb-4 outline-none focus:border-blue-500"
+                            />
                     </div>
 
-                    <div className="priority w-full sm:w-auto">
-                        <label htmlFor="priority" className="block text-xs font-bold text-gray-500 uppercase tracking-wide">Priority</label>
+                    <div className="w-full sm:flex-1">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                            Description (Optional)
+                        </label>
+                    
+                        <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={4}
+                        placeholder="Add description..."
+                        className="w-full border border-gray-300 rounded-xl px-4 py-3 mb-4 outline-none focus:border-blue-500 resize-none"
+                    />
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
                         <select
-                            className='border-2 w-full sm:w-auto border-gray-400 rounded-lg py-1.5 px-3 mt-2 focus:outline-none transition-colors duration-200 focus:border-blue-900'
-                            name="priority"
-                            id="priority"
                             value={priority}
                             onChange={(e) => setPriority(e.target.value)}
+                            className="border border-gray-300 rounded-xl px-4 py-3"
                         >
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
                         </select>
+                
+                        <button
+                            type="submit"
+                            className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold"
+                        >
+                            Add Task
+                        </button>
                     </div>
-
-                    <button
-                        className='bg-orange-500 text-white font-bold w-full sm:w-auto py-2 px-5 rounded cursor-pointer sm:mt-7 transition-colors duration-200 hover:bg-blue-700 h-[42px]'
-                        type="submit"
-                    >
-                        Add task
-                    </button>
                 </form>
             </div>
         </div>

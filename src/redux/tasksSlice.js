@@ -68,11 +68,12 @@ const tasksSlice = createSlice({
             reducer(state, action) {
                 state.tasks.push(action.payload)
             },
-            prepare(title, priority, assignedDate) {
+            prepare(title, priority, assignedDate, description = '') {
                 return {
                     payload: {
                         id: nanoid(),
                         title,
+                        description,
                         priority,
                         completedDates: [],
                         date: assignedDate,
@@ -87,11 +88,12 @@ const tasksSlice = createSlice({
         },
 
         editTask(state, action) {
-            const { id, title, priority } = action.payload
+            const { id, title, priority, description } = action.payload
             const task = state.tasks.find((t) => t.id === id)
             if (task) {
                 task.title = title
                 task.priority = priority
+                task.description = description
             }
         },
 

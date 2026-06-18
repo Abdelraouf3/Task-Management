@@ -14,6 +14,7 @@ const loadState = () => {
         const migratedTasks = rawTasks.map((task, idx) => ({
             id: task.id,
             title: task.title,
+            description: task.description,
             priority: task.priority || 'low',
         
             completedDates:
