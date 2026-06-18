@@ -62,7 +62,7 @@ const TaskForm = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={4}
-                        placeholder="Add description..."
+                        placeholder="Add extra details, notes, links, reminders..."
                         className="w-full border border-gray-300 rounded-xl px-4 py-3 mb-4 outline-none focus:border-blue-500 resize-none"
                     />
                     </div>
